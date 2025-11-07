@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Play, Clock, Database } from 'lucide-react';
+import { Play, Target } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
@@ -12,17 +12,17 @@ interface DataResultCardProps {
 export default function DataResultCard({ result }: DataResultCardProps) {
   const [previewOpen, setPreviewOpen] = useState(false);
 
-  const getSourceColor = (source: string) => {
-    switch (source) {
-      case 'Asimov':
-        return 'bg-[var(--accent)]/20 text-[var(--accent)] border-[var(--accent)]';
-      case 'Ego4D':
-        return 'bg-[var(--accent-2)]/20 text-[var(--accent-2)] border-[var(--accent-2)]';
-      case 'EgoDex':
-        return 'bg-emerald-500/20 text-emerald-400 border-emerald-500';
-      default:
-        return 'bg-[var(--panel)] text-[var(--text-secondary)]';
-    }
+  // Format task name for display (e.g., "throw_and_catch_ball" -> "Throw and Catch Ball")
+  const formatTaskName = (task: string) => {
+    return task
+      .split('_')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  };
+
+  // Format score as percentage
+  const formatScore = (score: number) => {
+    return `${(score * 100).toFixed(1)}%`;
   };
 
   return (
@@ -35,39 +35,26 @@ export default function DataResultCard({ result }: DataResultCardProps) {
 
         {/* Content */}
         <div className="flex-1 space-y-3">
-          <h3 className="text-lg font-semibold text-primary line-clamp-2">
-            {result.title}
-          </h3>
-
-          <p className="text-secondary text-sm line-clamp-2">
-            {result.description}
-          </p>
-
-          {/* Modalities */}
-          <div className="flex flex-wrap gap-2">
-            {result.modalities.map((modality) => (
-              <Badge
-                key={modality}
-                variant="outline"
-                className="text-xs border-[var(--border)] bg-transparent"
-              >
-                {modality}
-              </Badge>
-            ))}
+          <div className="flex items-start justify-between gap-2">
+            <h3 className="text-lg font-semibold text-primary line-clamp-1">
+              {formatTaskName(result.task)}
+            </h3>
+            <Badge
+              variant="outline"
+              className="text-xs border-[var(--accent)] bg-[var(--accent)]/10 text-[var(--accent)] flex-shrink-0"
+            >
+              {formatScore(result.score)}
+            </Badge>
           </div>
 
+          <p className="text-secondary text-sm line-clamp-3">
+            {result.caption}
+          </p>
+
           {/* Metadata */}
-          <div className="flex items-center gap-4 text-sm text-secondary">
-            <div className="flex items-center gap-1">
-              <Clock size={14} />
-              <span>{result.duration}</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <Database size={14} />
-              <span className={`tag ${getSourceColor(result.source)}`}>
-                {result.source}
-              </span>
-            </div>
+          <div className="flex items-center gap-2 text-sm text-secondary">
+            <Target size={14} />
+            <span className="font-mono text-xs">{result.task}</span>
           </div>
         </div>
 
@@ -85,9 +72,9 @@ export default function DataResultCard({ result }: DataResultCardProps) {
       <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
         <DialogContent className="bg-[var(--bg)] border-[var(--border)] max-w-3xl">
           <DialogHeader>
-            <DialogTitle className="text-primary">{result.title}</DialogTitle>
+            <DialogTitle className="text-primary">{formatTaskName(result.task)}</DialogTitle>
             <DialogDescription className="text-secondary">
-              {result.description}
+              {result.caption}
             </DialogDescription>
           </DialogHeader>
 
@@ -103,31 +90,27 @@ export default function DataResultCard({ result }: DataResultCardProps) {
             {/* Metadata */}
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
-                <span className="text-secondary">Duration:</span>
-                <span className="text-primary ml-2">{result.duration}</span>
+                <span className="text-secondary">Task:</span>
+                <span className="text-primary ml-2">{result.task}</span>
               </div>
               <div>
-                <span className="text-secondary">Source:</span>
-                <span className="text-primary ml-2">{result.source}</span>
-              </div>
-              <div>
-                <span className="text-secondary">Task Type:</span>
-                <span className="text-primary ml-2">{result.taskType}</span>
-              </div>
-              <div>
-                <span className="text-secondary">Environment:</span>
-                <span className="text-primary ml-2">{result.environment}</span>
+                <span className="text-secondary">Score:</span>
+                <span className="text-primary ml-2">{formatScore(result.score)}</span>
               </div>
             </div>
 
-            <div>
-              <span className="text-secondary">Modalities:</span>
-              <div className="flex flex-wrap gap-2 mt-2">
-                {result.modalities.map((modality) => (
-                  <Badge key={modality} variant="outline" className="border-[var(--border)]">
-                    {modality}
-                  </Badge>
-                ))}
+            <div className="space-y-2">
+              <div>
+                <span className="text-secondary text-sm">MP4:</span>
+                <p className="text-primary text-xs font-mono mt-1 p-2 bg-[var(--surface)] rounded break-all">
+                  {result.mp4}
+                </p>
+              </div>
+              <div>
+                <span className="text-secondary text-sm">HDF5:</span>
+                <p className="text-primary text-xs font-mono mt-1 p-2 bg-[var(--surface)] rounded break-all">
+                  {result.hdf5}
+                </p>
               </div>
             </div>
           </div>

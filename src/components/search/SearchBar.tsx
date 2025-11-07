@@ -5,13 +5,13 @@ import { Button } from '@/components/ui/button';
 interface SearchBarProps {
   value: string;
   onChange: (value: string) => void;
-  onSearch: () => void;
+  onSearch: () => void | Promise<void>;
 }
 
 export default function SearchBar({ value, onChange, onSearch }: SearchBarProps) {
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSearch();
+    await onSearch();
   };
 
   return (
@@ -21,7 +21,7 @@ export default function SearchBar({ value, onChange, onSearch }: SearchBarProps)
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-secondary" size={20} />
           <Input
             type="text"
-            placeholder='Try "folding t-shirts in laundry room"'
+            placeholder='Try "ball" or "throw and catch"'
             value={value}
             onChange={(e) => onChange(e.target.value)}
             className="pl-10 bg-[var(--bg)] border-[var(--border)] text-primary h-12"

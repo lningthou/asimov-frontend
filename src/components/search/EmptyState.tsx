@@ -17,7 +17,7 @@ export default function EmptyState({ onReset }: EmptyStateProps) {
       </h3>
 
       <p className="text-[var(--text-secondary)] mb-6 max-w-md">
-        We couldn't find any data matching your search criteria. Try adjusting your filters or search terms.
+        We couldn't find any data matching your search query. Try different search terms.
       </p>
 
       <Button
@@ -25,7 +25,7 @@ export default function EmptyState({ onReset }: EmptyStateProps) {
         variant="outline"
         className="border-[var(--border)] hover:bg-[var(--panel-strong)] hover:border-[var(--accent)]"
       >
-        Clear Filters
+        Clear Search
       </Button>
     </div>
   );

@@ -37,8 +37,8 @@ export default function ResultsGrid({ results, loading, onReset }: ResultsGridPr
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {results.map((result) => (
-        <div key={result.id}>
+      {results.map((result, index) => (
+        <div key={`${result.task}-${index}`}>
           <DataResultCard result={result} />
         </div>
       ))}
