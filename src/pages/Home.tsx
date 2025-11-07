@@ -1,158 +1,173 @@
 
 import { Link } from '@tanstack/react-router';
-import { Search, Cpu, Package, ArrowRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import GlassCard from '@/components/ui/GlassCard';
-import GlassButton from '@/components/ui/GlassButton';
-import InterestForm from '@/components/forms/InterestForm';
+import { ArrowRight } from 'lucide-react';
+import HeroViz from '@/components/hero/HeroViz';
 
 export default function Home() {
-  const valueProps = [
-    {
-      icon: Search,
-      title: 'Semantic Search',
-      description: 'Find exactly what you need with natural language queries. Search by task, environment, object, and more.',
-    },
-    {
-      icon: Cpu,
-      title: 'Ergonomic Capture',
-      description: 'High-quality egocentric data captured with our custom hardware stack. Video, IMU, force, audio, and depth.',
-    },
-    {
-      icon: Package,
-      title: 'Standardized Delivery',
-      description: 'Clean, well-formatted data ready for training. Consistent formats, clear metadata, and easy integration.',
-    },
-  ];
-
   const partnerLogos = ['OpenAI', 'Meta', 'Google', 'Tesla', 'Boston Dynamics', 'Figure'];
 
   return (
     <div className="w-full">
       {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
-        {/* Animated grid background */}
-        <div className="absolute inset-0 grid-bg opacity-40" />
-
-        {/* Hero gradient */}
+      <section className="relative min-h-[90vh] flex items-center overflow-hidden">
+        {/* Background layers */}
+        <div className="absolute inset-0 grid-overlay" />
         <div className="absolute inset-0 hero-gradient" />
 
         <div className="container mx-auto px-4 relative z-10">
-          <div
-            className="max-w-4xl mx-auto text-center"
-          >
-            <h1
-              className="text-5xl md:text-6xl lg:text-7xl font-bold text-[var(--text-primary)] mb-6 leading-tight"
-            >
-              Egocentric data for{' '}
-              <span className="bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] bg-clip-text text-transparent">
-                foundational robot models
-              </span>
-            </h1>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            {/* Left: Text Content */}
+            <div className="space-y-8">
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
+                Egocentric data for{' '}
+                <span className="bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] bg-clip-text text-transparent">
+                  foundational robot models
+                </span>
+              </h1>
 
-            <p
-              className="text-xl md:text-2xl text-[var(--text-secondary)] mb-10 max-w-3xl mx-auto"
-            >
-              A curated marketplace of high-quality egocentric demonstrations, plus an ergonomic capture stack to collect your own.
-            </p>
+              <p className="text-xl md:text-2xl text-secondary max-w-2xl">
+                A curated marketplace of high-quality egocentric demonstrations, plus an ergonomic capture stack. RGB, motion, force—unified for training.
+              </p>
 
-            <div
-              className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-            >
-              <Button
-                size="lg"
-                className="bg-[var(--accent)] text-[var(--bg)] hover:bg-[var(--accent)]/90 shadow-xl shadow-[var(--glow-cyan)] text-lg px-8 h-14"
-              >
-                Request Data
-                <ArrowRight className="ml-2" size={20} />
-              </Button>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button className="btn-primary text-lg px-8 h-14 inline-flex items-center justify-center">
+                  Request Data
+                  <ArrowRight className="ml-2" size={20} />
+                </button>
 
-              <Link to="/search">
-                <GlassButton variant="secondary" size="lg" className="text-lg px-8 h-14">
-                  Explore Search
-                </GlassButton>
-              </Link>
+                <Link to="/search">
+                  <button className="btn-ghost text-lg px-8 h-14 inline-flex items-center justify-center w-full">
+                    Explore Search
+                  </button>
+                </Link>
+              </div>
+            </div>
+
+            {/* Right: Animated Canvas */}
+            <div className="hidden lg:block">
+              <div className="w-full h-[600px]">
+                <HeroViz />
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Logos Strip */}
-      <section className="py-16 border-y border-[var(--border)] bg-[var(--panel)]">
+      {/* Backed By Row */}
+      <section className="py-16 border-y border-[var(--border)] bg-[var(--surface)]">
         <div className="container mx-auto px-4">
-          <p className="text-center text-[var(--text-secondary)] mb-8 text-sm uppercase tracking-wider">
-            Trusted by leading robotics teams
-          </p>
+          <div className="text-center mb-8">
+            <span className="tag">BACKED BY</span>
+          </div>
 
           <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
             {partnerLogos.map((logo) => (
-              <Badge
+              <div
                 key={logo}
-                variant="outline"
-                className="px-6 py-3 text-[var(--text-secondary)] border-[var(--border)] bg-transparent hover:border-[var(--accent)] transition-colors text-base"
+                className="px-6 py-3 text-secondary border border-[var(--border)] rounded-none bg-transparent hover:brightness-125 transition-all text-base font-medium"
               >
                 {logo}
-              </Badge>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Value Props */}
+      {/* Problem Section */}
       <section className="py-24 container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-[var(--text-primary)] mb-4">
-            Why Asimov?
-          </h2>
-          <p className="text-xl text-[var(--text-secondary)] max-w-2xl mx-auto">
-            Everything you need to build the next generation of embodied AI.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {valueProps.map((prop, index) => (
-            <GlassCard key={index} className="text-center">
-              <div
-                className="inline-flex p-4 rounded-full bg-[var(--panel-strong)] mb-6"
-              >
-                <prop.icon size={32} className="text-[var(--accent)]" />
-              </div>
-
-              <h3 className="text-2xl font-bold text-[var(--text-primary)] mb-3">
-                {prop.title}
-              </h3>
-              <p className="text-[var(--text-secondary)]">
-                {prop.description}
+        <div className="max-w-6xl mx-auto">
+          <div className="mb-6">
+            <span className="tag">PROBLEM</span>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6">
+                Collecting robot training data is slow, fragmented, and bulky.
+              </h2>
+              <p className="text-xl text-secondary">
+                Teams waste months stitching together datasets from different sources, with inconsistent formats and missing modalities.
               </p>
-            </GlassCard>
-          ))}
+            </div>
+            <div className="aspect-[16/9] hairline bg-[var(--surface)] flex items-center justify-center">
+              <span className="text-secondary text-sm">Diagram placeholder</span>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Interest Form */}
-      <section className="py-24 bg-[var(--panel)]">
-        <div className="container mx-auto px-4">
-          <InterestForm />
+      {/* Solution Section */}
+      <section className="py-24 container mx-auto px-4 bg-[var(--surface)]">
+        <div className="max-w-6xl mx-auto">
+          <div className="mb-6">
+            <span className="tag">SOLUTION</span>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="aspect-[16/9] hairline bg-[var(--bg)] flex items-center justify-center">
+              <span className="text-secondary text-sm">Diagram placeholder</span>
+            </div>
+            <div>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6">
+                Asimov unifies capture and discovery into a single pipeline.
+              </h2>
+              <p className="text-xl text-secondary">
+                Search existing datasets or capture new data with our hardware kits—all delivered in robot-agnostic formats aligned to Open X-Embodiment.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* CTA Strip */}
-      <section className="py-20 container mx-auto px-4">
-        <div className="max-w-4xl mx-auto text-center glass rounded-2xl p-12">
-          <h2 className="text-4xl md:text-5xl font-bold text-[var(--text-primary)] mb-6">
-            Ready to pilot?
+      {/* Three-Step Cards */}
+      <section className="py-24 container mx-auto px-4">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Step 1 */}
+          <div className="bg-[var(--surface)] hairline p-6 md:p-8 rounded-none hover:-translate-y-0.5 hover:border-[var(--border-strong)] transition-all">
+            <div className="w-12 h-12 bg-[var(--bg)] hairline-strong flex items-center justify-center font-bold text-xl mb-4">
+              1
+            </div>
+            <h3 className="text-2xl font-bold mb-3">SEARCH</h3>
+            <p className="text-secondary">
+              Find exactly the task you need across open datasets and Asimov captures.
+            </p>
+          </div>
+
+          {/* Step 2 */}
+          <div className="bg-[var(--surface)] hairline p-6 md:p-8 rounded-none hover:-translate-y-0.5 hover:border-[var(--border-strong)] transition-all">
+            <div className="w-12 h-12 bg-[var(--bg)] hairline-strong flex items-center justify-center font-bold text-xl mb-4">
+              2
+            </div>
+            <h3 className="text-2xl font-bold mb-3">CAPTURE</h3>
+            <p className="text-secondary">
+              Low-profile kits record RGB, motion, and force in sync.
+            </p>
+          </div>
+
+          {/* Step 3 */}
+          <div className="bg-[var(--surface)] hairline p-6 md:p-8 rounded-none hover:-translate-y-0.5 hover:border-[var(--border-strong)] transition-all">
+            <div className="w-12 h-12 bg-[var(--bg)] hairline-strong flex items-center justify-center font-bold text-xl mb-4">
+              3
+            </div>
+            <h3 className="text-2xl font-bold mb-3">DELIVER</h3>
+            <p className="text-secondary">
+              Robot-agnostic data packs aligned to Open X-Embodiment.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="py-24 container mx-auto px-4">
+        <div className="max-w-4xl mx-auto text-center space-y-8">
+          <h2 className="text-4xl md:text-5xl font-bold">
+            Ready to start your pilot?
           </h2>
-          <p className="text-xl text-[var(--text-secondary)] mb-8">
+          <p className="text-xl text-secondary max-w-2xl mx-auto">
             Join our early access program and get custom data for your robotics project.
           </p>
-          <Button
-            size="lg"
-            className="bg-[var(--accent)] text-[var(--bg)] hover:bg-[var(--accent)]/90 shadow-xl shadow-[var(--glow-cyan)] text-lg px-10 h-14"
-          >
-            Get Started
+          <button className="btn-primary text-lg px-10 h-14 inline-flex items-center justify-center">
+            Request Data
             <ArrowRight className="ml-2" size={20} />
-          </Button>
+          </button>
         </div>
       </section>
     </div>

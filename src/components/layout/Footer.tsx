@@ -13,32 +13,32 @@ export default function Footer() {
             <div className="text-2xl font-bold bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] bg-clip-text text-transparent mb-4">
               Asimov
             </div>
-            <p className="text-[var(--text-secondary)] text-sm">
+            <p className="text-secondary text-sm">
               Egocentric data for foundational robot models.
             </p>
           </div>
 
           {/* Product */}
           <div>
-            <h3 className="text-[var(--text-primary)] font-semibold mb-4">Product</h3>
+            <h3 className="text-primary font-semibold mb-4">Product</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/search" className="text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors text-sm">
+                <Link to="/search" className="text-secondary hover:text-[var(--accent)] transition-colors text-sm">
                   Search
                 </Link>
               </li>
               <li>
-                <a href="#" className="text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors text-sm">
+                <a href="#" className="text-secondary hover:text-[var(--accent)] transition-colors text-sm">
                   Capture Stack
                 </a>
               </li>
               <li>
-                <a href="#" className="text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors text-sm">
+                <a href="#" className="text-secondary hover:text-[var(--accent)] transition-colors text-sm">
                   API
                 </a>
               </li>
               <li>
-                <a href="#" className="text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors text-sm">
+                <a href="#" className="text-secondary hover:text-[var(--accent)] transition-colors text-sm">
                   Pricing
                 </a>
               </li>
@@ -47,25 +47,25 @@ export default function Footer() {
 
           {/* Resources */}
           <div>
-            <h3 className="text-[var(--text-primary)] font-semibold mb-4">Resources</h3>
+            <h3 className="text-primary font-semibold mb-4">Resources</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors text-sm">
+                <a href="#" className="text-secondary hover:text-[var(--accent)] transition-colors text-sm">
                   Docs
                 </a>
               </li>
               <li>
-                <a href="#" className="text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors text-sm">
+                <a href="#" className="text-secondary hover:text-[var(--accent)] transition-colors text-sm">
                   Blog
                 </a>
               </li>
               <li>
-                <a href="#" className="text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors text-sm">
+                <a href="#" className="text-secondary hover:text-[var(--accent)] transition-colors text-sm">
                   Research
                 </a>
               </li>
               <li>
-                <a href="#" className="text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors text-sm">
+                <a href="#" className="text-secondary hover:text-[var(--accent)] transition-colors text-sm">
                   Support
                 </a>
               </li>
@@ -74,20 +74,20 @@ export default function Footer() {
 
           {/* Company */}
           <div>
-            <h3 className="text-[var(--text-primary)] font-semibold mb-4">Company</h3>
+            <h3 className="text-primary font-semibold mb-4">Company</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors text-sm">
+                <a href="#" className="text-secondary hover:text-[var(--accent)] transition-colors text-sm">
                   About
                 </a>
               </li>
               <li>
-                <a href="#" className="text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors text-sm">
+                <a href="#" className="text-secondary hover:text-[var(--accent)] transition-colors text-sm">
                   Careers
                 </a>
               </li>
               <li>
-                <a href="#" className="text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors text-sm">
+                <a href="#" className="text-secondary hover:text-[var(--accent)] transition-colors text-sm">
                   Contact
                 </a>
               </li>
@@ -97,28 +97,28 @@ export default function Footer() {
 
         {/* Bottom */}
         <div className="mt-12 pt-8 border-t border-[var(--border)] flex flex-col md:flex-row justify-between items-center">
-          <p className="text-[var(--text-secondary)] text-sm">
+          <p className="text-secondary text-sm">
             © {currentYear} Asimov. All rights reserved.
           </p>
 
           <div className="flex space-x-4 mt-4 md:mt-0">
             <a
               href="#"
-              className="text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors"
+              className="text-secondary hover:text-[var(--accent)] transition-colors"
               aria-label="GitHub"
             >
               <Github size={20} />
             </a>
             <a
               href="#"
-              className="text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors"
+              className="text-secondary hover:text-[var(--accent)] transition-colors"
               aria-label="Twitter"
             >
               <Twitter size={20} />
             </a>
             <a
               href="#"
-              className="text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors"
+              className="text-secondary hover:text-[var(--accent)] transition-colors"
               aria-label="LinkedIn"
             >
               <Linkedin size={20} />

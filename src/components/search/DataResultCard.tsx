@@ -3,7 +3,6 @@ import { Play, Clock, Database } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
-import GlassCard from '@/components/ui/GlassCard';
 import type { DataResult } from './mockData';
 
 interface DataResultCardProps {
@@ -28,19 +27,19 @@ export default function DataResultCard({ result }: DataResultCardProps) {
 
   return (
     <>
-      <GlassCard hover={true} className="flex flex-col h-full">
+      <div className="hairline bg-[var(--surface)] rounded-none p-6 flex flex-col h-full hover:border-[var(--border-strong)] transition-all">
         {/* Thumbnail placeholder */}
-        <div className="w-full aspect-video bg-gradient-to-br from-[var(--panel)] to-[var(--panel-strong)] rounded-lg mb-4 flex items-center justify-center border border-[var(--border)]">
-          <Play size={48} className="text-[var(--text-secondary)] opacity-50" />
+        <div className="w-full aspect-video bg-[var(--bg)] rounded-none mb-4 flex items-center justify-center hairline">
+          <Play size={48} className="text-secondary opacity-50" />
         </div>
 
         {/* Content */}
         <div className="flex-1 space-y-3">
-          <h3 className="text-lg font-semibold text-[var(--text-primary)] line-clamp-2">
+          <h3 className="text-lg font-semibold text-primary line-clamp-2">
             {result.title}
           </h3>
 
-          <p className="text-[var(--text-secondary)] text-sm line-clamp-2">
+          <p className="text-secondary text-sm line-clamp-2">
             {result.description}
           </p>
 
@@ -50,7 +49,7 @@ export default function DataResultCard({ result }: DataResultCardProps) {
               <Badge
                 key={modality}
                 variant="outline"
-                className="text-xs border-[var(--border)] bg-[var(--panel)]"
+                className="text-xs border-[var(--border)] bg-transparent"
               >
                 {modality}
               </Badge>
@@ -58,16 +57,16 @@ export default function DataResultCard({ result }: DataResultCardProps) {
           </div>
 
           {/* Metadata */}
-          <div className="flex items-center gap-4 text-sm text-[var(--text-secondary)]">
+          <div className="flex items-center gap-4 text-sm text-secondary">
             <div className="flex items-center gap-1">
               <Clock size={14} />
               <span>{result.duration}</span>
             </div>
             <div className="flex items-center gap-1">
               <Database size={14} />
-              <Badge variant="outline" className={`text-xs ${getSourceColor(result.source)}`}>
+              <span className={`tag ${getSourceColor(result.source)}`}>
                 {result.source}
-              </Badge>
+              </span>
             </div>
           </div>
         </div>
@@ -76,53 +75,53 @@ export default function DataResultCard({ result }: DataResultCardProps) {
         <Button
           onClick={() => setPreviewOpen(true)}
           variant="outline"
-          className="w-full mt-4 border-[var(--border)] hover:bg-[var(--panel-strong)] hover:border-[var(--accent)]"
+          className="w-full mt-4 border-[var(--border)] hover:border-[var(--accent)] rounded-none"
         >
           Preview
         </Button>
-      </GlassCard>
+      </div>
 
       {/* Preview Dialog */}
       <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
         <DialogContent className="bg-[var(--bg)] border-[var(--border)] max-w-3xl">
           <DialogHeader>
-            <DialogTitle className="text-[var(--text-primary)]">{result.title}</DialogTitle>
-            <DialogDescription className="text-[var(--text-secondary)]">
+            <DialogTitle className="text-primary">{result.title}</DialogTitle>
+            <DialogDescription className="text-secondary">
               {result.description}
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4">
             {/* Video placeholder */}
-            <div className="w-full aspect-video bg-gradient-to-br from-[var(--panel)] to-[var(--panel-strong)] rounded-lg flex items-center justify-center border border-[var(--border)]">
+            <div className="w-full aspect-video bg-[var(--surface)] rounded-none flex items-center justify-center hairline">
               <div className="text-center">
-                <Play size={64} className="text-[var(--text-secondary)] opacity-50 mx-auto mb-2" />
-                <p className="text-[var(--text-secondary)] text-sm">Video preview placeholder</p>
+                <Play size={64} className="text-secondary opacity-50 mx-auto mb-2" />
+                <p className="text-secondary text-sm">Video preview placeholder</p>
               </div>
             </div>
 
             {/* Metadata */}
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
-                <span className="text-[var(--text-secondary)]">Duration:</span>
-                <span className="text-[var(--text-primary)] ml-2">{result.duration}</span>
+                <span className="text-secondary">Duration:</span>
+                <span className="text-primary ml-2">{result.duration}</span>
               </div>
               <div>
-                <span className="text-[var(--text-secondary)]">Source:</span>
-                <span className="text-[var(--text-primary)] ml-2">{result.source}</span>
+                <span className="text-secondary">Source:</span>
+                <span className="text-primary ml-2">{result.source}</span>
               </div>
               <div>
-                <span className="text-[var(--text-secondary)]">Task Type:</span>
-                <span className="text-[var(--text-primary)] ml-2">{result.taskType}</span>
+                <span className="text-secondary">Task Type:</span>
+                <span className="text-primary ml-2">{result.taskType}</span>
               </div>
               <div>
-                <span className="text-[var(--text-secondary)]">Environment:</span>
-                <span className="text-[var(--text-primary)] ml-2">{result.environment}</span>
+                <span className="text-secondary">Environment:</span>
+                <span className="text-primary ml-2">{result.environment}</span>
               </div>
             </div>
 
             <div>
-              <span className="text-[var(--text-secondary)]">Modalities:</span>
+              <span className="text-secondary">Modalities:</span>
               <div className="flex flex-wrap gap-2 mt-2">
                 {result.modalities.map((modality) => (
                   <Badge key={modality} variant="outline" className="border-[var(--border)]">

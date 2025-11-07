@@ -3,51 +3,52 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Asimov Design System - Dark Slate Theme with Purple Accents */
+/* Asimov Design System - Lemma-style Square Corners, High Contrast */
 :root {
   /* Backgrounds */
-  --bg: #0a0a0f;
-  --panel: rgba(255, 255, 255, 0.04);
-  --panel-strong: rgba(255, 255, 255, 0.06);
-
-  /* Accents */
-  --accent: #A855F7;
-  --accent-2: #7C3AED;
-  --grid: rgba(168, 85, 247, 0.08);
+  --bg: #0A0A0B;
+  --surface: #0E0F11;
 
   /* Text */
-  --text-primary: #E2E8F0;
-  --text-secondary: #94A3B8;
+  --text: #F2F5FA;
+  --muted: #A7AFBE;
 
   /* Borders */
-  --border: rgba(255, 255, 255, 0.12);
-  --border-strong: rgba(255, 255, 255, 0.18);
+  --border: rgba(255, 255, 255, 0.10);
+  --border-strong: rgba(255, 255, 255, 0.16);
 
-  /* Glows */
-  --glow-purple: rgba(168, 85, 247, 0.35);
-  --glow-purple-deep: rgba(124, 58, 237, 0.35);
+  /* Accents */
+  --accent: #7CD4FF;
+  --accent-2: #8B5CF6;
+  --accent-gradient: linear-gradient(135deg, var(--accent), var(--accent-2));
+
+  /* Focus & Glow */
+  --ring: rgba(124, 212, 255, 0.35);
+  --glow: 0 0 24px rgba(124, 212, 255, 0.20);
+
+  /* SQUARE CORNERS ONLY */
+  --radius: 0px;
 
   /* Shadcn compatibility */
-  --background: #0a0a0f;
-  --foreground: #E2E8F0;
-  --card: rgba(255, 255, 255, 0.04);
-  --card-foreground: #E2E8F0;
-  --popover: rgba(255, 255, 255, 0.06);
-  --popover-foreground: #E2E8F0;
-  --primary: #A855F7;
-  --primary-foreground: #0a0a0f;
-  --secondary: rgba(255, 255, 255, 0.06);
-  --secondary-foreground: #E2E8F0;
-  --muted: rgba(255, 255, 255, 0.04);
-  --muted-foreground: #94A3B8;
-  --accent-var: rgba(255, 255, 255, 0.06);
-  --accent-foreground: #E2E8F0;
+  --background: #0A0A0B;
+  --foreground: #F2F5FA;
+  --card: #0E0F11;
+  --card-foreground: #F2F5FA;
+  --popover: #0E0F11;
+  --popover-foreground: #F2F5FA;
+  --primary: #7CD4FF;
+  --primary-foreground: #0A0A0B;
+  --secondary: #0E0F11;
+  --secondary-foreground: #F2F5FA;
+  --muted-bg: #0E0F11;
+  --muted-foreground: #A7AFBE;
+  --accent-var: #0E0F11;
+  --accent-foreground: #F2F5FA;
   --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: #E2E8F0;
-  --border-var: rgba(255, 255, 255, 0.12);
-  --input: rgba(255, 255, 255, 0.06);
-  --ring: #A855F7;
-  --radius: 0.75rem;
+  --destructive-foreground: #F2F5FA;
+  --border-var: rgba(255, 255, 255, 0.10);
+  --input: #0E0F11;
+  --ring-color: rgba(124, 212, 255, 0.35);
 }
 
 @theme inline {
@@ -61,7 +62,7 @@
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
+  --color-muted: var(--muted-bg);
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent-var);
   --color-accent-foreground: var(--accent-foreground);
@@ -69,11 +70,12 @@
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border-var);
   --color-input: var(--input);
-  --color-ring: var(--ring);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --color-ring: var(--ring-color);
+  /* All radii are 0px for square corners */
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
 }
 
 @layer base {
@@ -84,7 +86,7 @@
   body {
     @apply bg-background text-foreground;
     background-color: var(--bg);
-    color: var(--text-primary);
+    color: var(--text);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -106,6 +108,7 @@
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-bold tracking-tight;
+    color: var(--text);
   }
 
   h1 {
@@ -122,87 +125,123 @@
 }
 
 @layer components {
-  /* Glass utility */
-  .glass {
-    background: var(--panel);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+  /* Hairline borders */
+  .hairline {
     border: 1px solid var(--border);
+  }
+
+  .hairline-strong {
+    border: 1px solid var(--border-strong);
+  }
+
+  /* Tag/badge utility */
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 6px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border: 1px solid var(--border-strong);
+    color: var(--muted);
+    background: transparent;
+    font-weight: 600;
+  }
+
+  /* Primary button - flat square with hairline */
+  .btn-primary {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
     transition: all 200ms ease;
+    border-radius: 0;
   }
 
-  .glass:hover {
-    background: var(--panel-strong);
-    border-color: var(--border-strong);
+  .btn-primary:hover {
+    outline: 1px solid var(--accent);
+    box-shadow: var(--glow);
   }
 
-  .glass:focus-visible {
+  .btn-primary:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
   }
 
-  /* Animated grid background */
-  .grid-bg {
-    background-image:
-      linear-gradient(var(--grid) 1px, transparent 1px),
-      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-    background-size: 50px 50px;
-    animation: grid-move 20s linear infinite;
+  /* Ghost button */
+  .btn-ghost {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    transition: all 200ms ease;
+    border-radius: 0;
   }
 
-  @keyframes grid-move {
+  .btn-ghost:hover {
+    color: var(--accent);
+    border-color: var(--border-strong);
+  }
+
+  .btn-ghost:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* Subtle grid overlay for hero */
+  .grid-overlay {
+    background-image:
+      radial-gradient(circle at 50% 50%, rgba(124, 212, 255, 0.03) 0%, transparent 50%),
+      linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 100% 100%, 40px 40px, 40px 40px;
+    animation: grid-drift 30s linear infinite;
+  }
+
+  @keyframes grid-drift {
     0% {
-      background-position: 0 0;
+      background-position: 0 0, 0 0, 0 0;
     }
     100% {
-      background-position: 50px 50px;
+      background-position: 0 0, 40px 40px, 40px 40px;
     }
   }
 
-  /* Hero gradient */
+  @media (prefers-reduced-motion: reduce) {
+    .grid-overlay {
+      animation: none;
+    }
+  }
+
+  /* Hero gradient spotlight */
   .hero-gradient {
-    background: linear-gradient(
-      135deg,
-      rgba(168, 85, 247, 0.15) 0%,
-      rgba(124, 58, 237, 0.15) 100%
+    background: radial-gradient(
+      ellipse 60% 50% at 30% 50%,
+      rgba(124, 212, 255, 0.08) 0%,
+      rgba(139, 92, 246, 0.06) 50%,
+      transparent 100%
     );
-  }
-
-  /* Glow effects */
-  .glow-purple {
-    box-shadow: 0 0 20px var(--glow-purple);
-  }
-
-  .glow-purple-deep {
-    box-shadow: 0 0 20px var(--glow-purple-deep);
-  }
-
-  /* Legacy support */
-  .glow-cyan {
-    box-shadow: 0 0 20px var(--glow-purple);
   }
 
   /* Focus ring */
   .focus-ring {
-    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg)];
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg)];
   }
 }
 
 @layer utilities {
   .text-primary {
-    color: var(--text-primary);
+    color: var(--text);
   }
 
   .text-secondary {
-    color: var(--text-secondary);
+    color: var(--muted);
   }
 
-  .bg-panel {
-    background: var(--panel);
-  }
-
-  .bg-panel-strong {
-    background: var(--panel-strong);
+  .bg-surface {
+    background: var(--surface);
   }
 
   .border-custom {

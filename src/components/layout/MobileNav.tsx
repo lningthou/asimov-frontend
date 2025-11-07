@@ -15,13 +15,13 @@ export default function MobileNav({ open, onClose, navItems }: MobileNavProps) {
     <Sheet open={open} onOpenChange={onClose}>
       <SheetContent side="right" className="w-[300px] bg-[var(--bg)] border-[var(--border)]">
         <SheetHeader>
-          <SheetTitle className="text-[var(--text-primary)] flex items-center justify-between">
+          <SheetTitle className="text-primary flex items-center justify-between">
             <span className="text-xl font-bold bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] bg-clip-text text-transparent">
               Asimov
             </span>
             <button
               onClick={onClose}
-              className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+              className="text-secondary hover:text-primary transition-colors"
               aria-label="Close menu"
             >
               <X size={20} />
@@ -35,7 +35,7 @@ export default function MobileNav({ open, onClose, navItems }: MobileNavProps) {
               key={item.href}
               to={item.href}
               onClick={onClose}
-              className="text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-200 text-lg font-medium py-2"
+              className="text-secondary hover:text-primary transition-colors duration-200 text-lg font-medium py-2"
             >
               {item.label}
             </Link>
@@ -44,7 +44,7 @@ export default function MobileNav({ open, onClose, navItems }: MobileNavProps) {
           <Separator className="bg-[var(--border)]" />
 
           <Button
-            className="w-full bg-[var(--accent)] text-[var(--bg)] hover:bg-[var(--accent)]/90 shadow-lg shadow-[var(--glow-cyan)]"
+            className="w-full bg-[var(--accent)] text-[var(--bg)] hover:bg-[var(--accent)]/90 rounded-none"
             onClick={onClose}
           >
             Request Data

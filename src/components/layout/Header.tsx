@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useRouterState } from '@tanstack/react-router';
 import { Menu } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import MobileNav from './MobileNav';
 
 export default function Header() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const routerState = useRouterState();
   const currentPath = routerState.location.pathname;
 
@@ -16,15 +16,30 @@ export default function Header() {
     { label: 'Contact', href: '#' },
   ];
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <>
-      <header className="sticky top-0 z-50 glass border-b border-[var(--border)]">
+      <header
+        className={`sticky top-0 z-50 transition-all duration-300 ${
+          scrolled
+            ? 'backdrop-blur-sm bg-[var(--bg)]/80 border-b border-[var(--border)]'
+            : 'bg-transparent'
+        }`}
+      >
         <div className="container mx-auto px-4">
           <div className="flex h-16 items-center justify-between">
-            {/* Logo */}
-            <Link to="/" className="flex items-center space-x-2 group">
-              <div className="text-2xl font-bold bg-gradient-to-r from-[var(--accent)] to-[var(--accent-2)] bg-clip-text text-transparent">
-                Asimov
+            {/* Logo - lowercase wordmark */}
+            <Link to="/" className="flex items-center group">
+              <div className="text-2xl font-bold text-primary">
+                asimov
               </div>
             </Link>
 
@@ -34,28 +49,27 @@ export default function Header() {
                 <Link
                   key={item.href}
                   to={item.href}
-                  className="relative text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-200 text-sm font-medium"
+                  className="relative text-secondary hover:text-primary transition-colors duration-200 text-sm font-medium group"
                 >
                   {item.label}
-                  {currentPath === item.href && (
-                    <div className="absolute -bottom-[21px] left-0 right-0 h-0.5 bg-[var(--accent)]" />
-                  )}
+                  <span
+                    className={`absolute -bottom-[21px] left-0 right-0 h-0.5 bg-[var(--accent)] transition-transform duration-200 ${
+                      currentPath === item.href ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
+                    }`}
+                  />
                 </Link>
               ))}
             </nav>
 
             {/* CTA and Mobile Menu */}
             <div className="flex items-center space-x-4">
-              <Button
-                className="hidden md:inline-flex bg-[var(--accent)] text-[var(--bg)] hover:bg-[var(--accent)]/90 shadow-lg shadow-[var(--glow-purple)]"
-                size="sm"
-              >
+              <button className="hidden md:inline-flex btn-primary text-sm px-6 h-10">
                 Request Data
-              </Button>
+              </button>
 
               {/* Mobile menu button */}
               <button
-                className="md:hidden p-2 text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors"
+                className="md:hidden p-2 text-primary hover:text-[var(--accent)] transition-colors"
                 onClick={() => setMobileNavOpen(true)}
                 aria-label="Open menu"
               >

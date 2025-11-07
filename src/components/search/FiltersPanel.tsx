@@ -1,4 +1,3 @@
-import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
 
@@ -48,12 +47,12 @@ export default function FiltersPanel({ filters, onFilterChange }: FiltersPanelPr
   };
 
   return (
-    <div className="glass rounded-lg p-6 space-y-6">
-      <h3 className="text-lg font-semibold text-[var(--text-primary)]">Filters</h3>
+    <div className="hairline bg-[var(--surface)] rounded-none p-6 space-y-6">
+      <h3 className="text-lg font-semibold text-primary">Filters</h3>
 
       {/* Task Type */}
       <div className="space-y-3">
-        <Label className="text-[var(--text-primary)] font-medium">Task Type</Label>
+        <span className="tag">TASK TYPE</span>
         <div className="space-y-2">
           {filterOptions.taskTypes.map((option) => (
             <div key={option.id} className="flex items-center space-x-2">
@@ -65,7 +64,7 @@ export default function FiltersPanel({ filters, onFilterChange }: FiltersPanelPr
               />
               <label
                 htmlFor={`task-${option.id}`}
-                className="text-[var(--text-secondary)] text-sm cursor-pointer"
+                className="text-secondary text-sm cursor-pointer"
               >
                 {option.label}
               </label>
@@ -78,7 +77,7 @@ export default function FiltersPanel({ filters, onFilterChange }: FiltersPanelPr
 
       {/* Environment */}
       <div className="space-y-3">
-        <Label className="text-[var(--text-primary)] font-medium">Environment</Label>
+        <span className="tag">ENVIRONMENT</span>
         <div className="space-y-2">
           {filterOptions.environments.map((option) => (
             <div key={option.id} className="flex items-center space-x-2">
@@ -90,7 +89,7 @@ export default function FiltersPanel({ filters, onFilterChange }: FiltersPanelPr
               />
               <label
                 htmlFor={`env-${option.id}`}
-                className="text-[var(--text-secondary)] text-sm cursor-pointer"
+                className="text-secondary text-sm cursor-pointer"
               >
                 {option.label}
               </label>
@@ -103,7 +102,7 @@ export default function FiltersPanel({ filters, onFilterChange }: FiltersPanelPr
 
       {/* Modalities */}
       <div className="space-y-3">
-        <Label className="text-[var(--text-primary)] font-medium">Modalities</Label>
+        <span className="tag">MODALITIES</span>
         <div className="space-y-2">
           {filterOptions.modalities.map((option) => (
             <div key={option.id} className="flex items-center space-x-2">
@@ -115,7 +114,7 @@ export default function FiltersPanel({ filters, onFilterChange }: FiltersPanelPr
               />
               <label
                 htmlFor={`mod-${option.id}`}
-                className="text-[var(--text-secondary)] text-sm cursor-pointer"
+                className="text-secondary text-sm cursor-pointer"
               >
                 {option.label}
               </label>
@@ -128,7 +127,7 @@ export default function FiltersPanel({ filters, onFilterChange }: FiltersPanelPr
 
       {/* Duration */}
       <div className="space-y-3">
-        <Label className="text-[var(--text-primary)] font-medium">Duration</Label>
+        <span className="tag">DURATION</span>
         <div className="space-y-2">
           {filterOptions.durations.map((option) => (
             <div key={option.id} className="flex items-center space-x-2">
@@ -140,7 +139,7 @@ export default function FiltersPanel({ filters, onFilterChange }: FiltersPanelPr
               />
               <label
                 htmlFor={`dur-${option.id}`}
-                className="text-[var(--text-secondary)] text-sm cursor-pointer"
+                className="text-secondary text-sm cursor-pointer"
               >
                 {option.label}
               </label>
