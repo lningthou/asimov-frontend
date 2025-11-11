@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -23,15 +23,17 @@ export default function RequestDataModal({ open, onOpenChange }: RequestDataModa
     company: '',
     dataNeeds: '',
   });
+  
+  const scrollPositionRef = useRef(0);
 
   // Preserve scroll position when modal opens/closes
   useEffect(() => {
     if (open) {
-      // Store current scroll position
-      const scrollY = window.scrollY;
+      // Store current scroll position in ref
+      scrollPositionRef.current = window.scrollY;
       const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
       
-      document.body.style.top = `-${scrollY}px`;
+      document.body.style.top = `-${scrollPositionRef.current}px`;
       document.body.style.position = 'fixed';
       document.body.style.width = '100%';
       document.body.style.overflow = 'hidden';
@@ -42,16 +44,14 @@ export default function RequestDataModal({ open, onOpenChange }: RequestDataModa
       
       return () => {
         // Restore scroll position when modal closes
-        const bodyTop = document.body.style.top;
         document.body.style.position = '';
         document.body.style.top = '';
         document.body.style.width = '';
         document.body.style.overflow = '';
         document.body.style.paddingRight = '';
         
-        // Restore scroll position
-        const scrollPosition = parseInt(bodyTop || '0') * -1;
-        window.scrollTo(0, scrollPosition);
+        // Restore scroll position from ref
+        window.scrollTo(0, scrollPositionRef.current);
       };
     }
   }, [open]);
