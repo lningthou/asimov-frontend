@@ -31,9 +31,14 @@ export default function HeroViz() {
       const dpr = window.devicePixelRatio || 1;
       const rect = canvas.getBoundingClientRect();
 
+      // Only setup if we have valid dimensions
+      if (rect.width === 0 || rect.height === 0) return;
+
       canvas.width = rect.width * dpr;
       canvas.height = rect.height * dpr;
 
+      // Reset transform and scale for high-DPI displays
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.scale(dpr, dpr);
 
       // Initialize particles
@@ -165,9 +170,18 @@ export default function HeroViz() {
       setup();
     };
 
-    // Initialize
-    setup();
-    animate();
+    // Initialize with slight delay to ensure layout is complete
+    const initTimeout = setTimeout(() => {
+      setup();
+      animate();
+    }, 0);
+
+    // Also try immediate setup in case layout is ready
+    requestAnimationFrame(() => {
+      if (particlesRef.current.length === 0) {
+        setup();
+      }
+    });
 
     // Event listeners
     document.addEventListener('visibilitychange', handleVisibilityChange);
@@ -175,6 +189,7 @@ export default function HeroViz() {
 
     // Cleanup
     return () => {
+      clearTimeout(initTimeout);
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
