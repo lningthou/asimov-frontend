@@ -6,11 +6,30 @@ export default function Header() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      // Check actual scroll position or body top offset (when modal is open)
+      const scrollY = window.scrollY;
+      const bodyTop = parseInt(document.body.style.top || '0');
+      const effectiveScroll = scrollY || Math.abs(bodyTop);
+      
+      setScrolled(effectiveScroll > 20);
     };
 
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    
+    // Also check on interval when body is fixed (for modal open state)
+    const intervalId = setInterval(() => {
+      if (document.body.style.position === 'fixed') {
+        handleScroll();
+      }
+    }, 100);
+
+    // Initial check
+    handleScroll();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearInterval(intervalId);
+    };
   }, []);
 
   return (

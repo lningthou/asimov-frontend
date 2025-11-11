@@ -29,17 +29,29 @@ export default function RequestDataModal({ open, onOpenChange }: RequestDataModa
     if (open) {
       // Store current scroll position
       const scrollY = window.scrollY;
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+      
       document.body.style.top = `-${scrollY}px`;
       document.body.style.position = 'fixed';
       document.body.style.width = '100%';
+      document.body.style.overflow = 'hidden';
+      // Prevent layout shift from scrollbar disappearing
+      if (scrollbarWidth > 0) {
+        document.body.style.paddingRight = `${scrollbarWidth}px`;
+      }
       
       return () => {
         // Restore scroll position when modal closes
-        const scrollY = document.body.style.top;
+        const bodyTop = document.body.style.top;
         document.body.style.position = '';
         document.body.style.top = '';
         document.body.style.width = '';
-        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+        document.body.style.overflow = '';
+        document.body.style.paddingRight = '';
+        
+        // Restore scroll position
+        const scrollPosition = parseInt(bodyTop || '0') * -1;
+        window.scrollTo(0, scrollPosition);
       };
     }
   }, [open]);
