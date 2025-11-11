@@ -57,7 +57,6 @@ export default function HeroViz() {
     // Flow field calculation with fixed loop
     const getFlowField = (x: number, y: number, time: number) => {
       const scale = 0.003;
-      const timeScale = 0.0005;
       
       // Loop duration: 8 seconds at 60fps = 480 frames
       const loopDuration = 480;

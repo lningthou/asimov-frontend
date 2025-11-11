@@ -1,12 +1,10 @@
 import { useState } from 'react';
-import { Link } from '@tanstack/react-router';
 import { ArrowRight } from 'lucide-react';
 import HeroViz from '@/components/hero/HeroViz';
 import RequestDataModal from '@/components/forms/RequestDataModal';
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const partnerLogos = ['OpenAI', 'Meta', 'Google', 'Tesla', 'Boston Dynamics', 'Figure'];
 
   return (
     <div className="w-full">
@@ -78,18 +76,13 @@ export default function Home() {
           <div className="mb-6">
             <span className="tag">PROBLEM</span>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                Collecting robot training data is slow, fragmented, and bulky.
-              </h2>
-              <p className="text-xl text-secondary">
-                Teams waste months stitching together datasets from different sources, with inconsistent formats and missing modalities.
-              </p>
-            </div>
-            <div className="aspect-[16/9] hairline bg-[var(--surface)] flex items-center justify-center">
-              <span className="text-secondary text-sm">Diagram placeholder</span>
-            </div>
+          <div className="max-w-3xl">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+              Collecting robot training data is slow, fragmented, and bulky.
+            </h2>
+            <p className="text-xl text-secondary">
+              Teams waste months stitching together datasets from different sources, with inconsistent formats and missing modalities.
+            </p>
           </div>
         </div>
       </section>
@@ -100,18 +93,13 @@ export default function Home() {
           <div className="mb-6">
             <span className="tag">SOLUTION</span>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="aspect-[16/9] hairline bg-[var(--bg)] flex items-center justify-center">
-              <span className="text-secondary text-sm">Diagram placeholder</span>
-            </div>
-            <div>
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                Asimov unifies capture and discovery into a single pipeline.
-              </h2>
-              <p className="text-xl text-secondary">
-                Search existing datasets or capture new data with our hardware kits—all delivered in robot-agnostic formats aligned to Open X-Embodiment.
-              </p>
-            </div>
+          <div className="max-w-3xl">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+              Asimov unifies capture and discovery into a single pipeline.
+            </h2>
+            <p className="text-xl text-secondary">
+              Search existing datasets or capture new data with our hardware kits—all delivered in robot-agnostic formats aligned to Open X-Embodiment.
+            </p>
           </div>
         </div>
       </section>
