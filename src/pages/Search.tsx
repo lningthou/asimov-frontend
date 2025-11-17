@@ -3,6 +3,7 @@ import { toast } from 'sonner';
 import SearchBar from '@/components/search/SearchBar';
 import ResultsGrid from '@/components/search/ResultsGrid';
 import type { DataResult, GroupedDataResult } from '@/components/search/mockData';
+import { s3ToHttps } from '@/utils/s3';
 
 const API_BASE_URL = 'https://apiasimov.com';
 const DEFAULT_K = 1000; // Number of results to fetch
@@ -70,8 +71,15 @@ export default function Search() {
 
       const data: DataResult[] = await response.json();
       
+      // Transform S3 URLs to HTTPS format
+      const dataWithHttpsUrls = data.map(result => ({
+        ...result,
+        mp4: s3ToHttps(result.mp4),
+        hdf5: s3ToHttps(result.hdf5),
+      }));
+      
       // Invert scores (lower distance = better match)
-      const dataWithInvertedScores = data.map(result => ({
+      const dataWithInvertedScores = dataWithHttpsUrls.map(result => ({
         ...result,
         score: 1 - result.score,
       }));

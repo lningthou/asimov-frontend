@@ -1,9 +1,61 @@
 import { useState } from 'react';
-import { Play, Target, FileVideo } from 'lucide-react';
+import { Play, Target, FileVideo, Download } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { toast } from 'sonner';
 import type { GroupedDataResult } from './mockData';
+
+// Helper to trigger download - Safari compatible
+const handleDownload = async (url: string, filename: string) => {
+  try {
+    // Try to fetch and download as blob for better cross-browser support
+    const response = await fetch(url);
+    
+    if (!response.ok) {
+      throw new Error(`Download failed: ${response.statusText}`);
+    }
+    
+    const blob = await response.blob();
+    const blobUrl = window.URL.createObjectURL(blob);
+    
+    const link = document.createElement('a');
+    link.href = blobUrl;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    // Clean up blob URL after a short delay
+    setTimeout(() => {
+      window.URL.revokeObjectURL(blobUrl);
+    }, 100);
+  } catch (error) {
+    // Show error message instead of popup
+    console.error('Download failed:', error);
+    toast.error(`Failed to download ${filename}. Please try again or copy the URL manually.`);
+  }
+};
+
+// Download both MP4 and HDF5
+const handleDownloadBoth = async (mp4Url: string, hdf5Url: string, taskName: string, fileIndex: number) => {
+  await handleDownload(mp4Url, `${taskName}_${fileIndex}.mp4`);
+  await new Promise(resolve => setTimeout(resolve, 100));
+  await handleDownload(hdf5Url, `${taskName}_${fileIndex}.hdf5`);
+};
+
+// Download all files in a grouped result
+const handleDownloadAll = async (result: GroupedDataResult) => {
+  for (let idx = 0; idx < result.files.length; idx++) {
+    const file = result.files[idx];
+    await handleDownload(file.mp4, `${result.task}_${idx + 1}.mp4`);
+    await new Promise(resolve => setTimeout(resolve, 100));
+    await handleDownload(file.hdf5, `${result.task}_${idx + 1}.hdf5`);
+    if (idx < result.files.length - 1) {
+      await new Promise(resolve => setTimeout(resolve, 200));
+    }
+  }
+};
 
 interface DataResultCardProps {
   result: GroupedDataResult;
@@ -66,14 +118,23 @@ export default function DataResultCard({ result }: DataResultCardProps) {
           </div>
         </div>
 
-        {/* Preview Button */}
-        <Button
-          onClick={() => setPreviewOpen(true)}
-          variant="outline"
-          className="w-full mt-4 border-[var(--border)] hover:border-[var(--accent)] rounded-none"
-        >
-          Preview {result.files.length > 1 ? `(${result.files.length})` : ''}
-        </Button>
+        {/* Action Buttons */}
+        <div className="mt-4 flex gap-2">
+          <Button
+            onClick={() => handleDownloadAll(result)}
+            className="flex-1 bg-[var(--accent)] text-[var(--bg)] font-medium hover:opacity-90 transition-opacity"
+          >
+            <Download size={16} className="mr-2" />
+            Download All
+          </Button>
+          <Button
+            onClick={() => setPreviewOpen(true)}
+            variant="outline"
+            className="flex-1 border-[var(--border)] hover:border-[var(--accent)] rounded-none"
+          >
+            Preview
+          </Button>
+        </div>
       </div>
 
       {/* Preview Dialog */}
@@ -116,24 +177,37 @@ export default function DataResultCard({ result }: DataResultCardProps) {
               </div>
               <div className="space-y-3 max-h-[400px] overflow-y-auto">
                 {result.files.map((file, idx) => (
-                  <div key={idx} className="bg-[var(--surface)] hairline p-3 rounded space-y-2">
+                  <div key={idx} className="bg-[var(--surface)] hairline p-4 rounded space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-semibold text-secondary">File {idx + 1}</span>
+                      <span className="text-sm font-semibold text-primary">File {idx + 1}</span>
                       <Badge variant="outline" className="text-xs">
                         {formatScore(file.score)}
                       </Badge>
                     </div>
-                    <div>
-                      <span className="text-secondary text-xs">MP4:</span>
-                      <p className="text-primary text-xs font-mono mt-1 break-all">
-                        {file.mp4}
-                      </p>
-                    </div>
-                    <div>
-                      <span className="text-secondary text-xs">HDF5:</span>
-                      <p className="text-primary text-xs font-mono mt-1 break-all">
-                        {file.hdf5}
-                      </p>
+                    
+                    {/* Download Button */}
+                    <Button
+                      onClick={() => handleDownloadBoth(file.mp4, file.hdf5, result.task, idx + 1)}
+                      className="w-full bg-[var(--accent)] text-[var(--bg)] font-medium hover:opacity-90 transition-opacity h-9"
+                    >
+                      <Download size={16} className="mr-2" />
+                      Download
+                    </Button>
+                    
+                    {/* File URLs */}
+                    <div className="space-y-2">
+                      <div>
+                        <span className="text-secondary text-xs block mb-1">MP4:</span>
+                        <p className="text-primary text-xs font-mono break-all opacity-70">
+                          {file.mp4}
+                        </p>
+                      </div>
+                      <div>
+                        <span className="text-secondary text-xs block mb-1">HDF5:</span>
+                        <p className="text-primary text-xs font-mono break-all opacity-70">
+                          {file.hdf5}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 ))}
