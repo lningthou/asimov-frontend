@@ -69,7 +69,14 @@ export default function Search() {
       }
 
       const data: DataResult[] = await response.json();
-      const groupedData = groupResultsByCaption(data);
+      
+      // Invert scores (lower distance = better match)
+      const dataWithInvertedScores = data.map(result => ({
+        ...result,
+        score: 1 - result.score,
+      }));
+      
+      const groupedData = groupResultsByCaption(dataWithInvertedScores);
       setResults(groupedData);
       
       if (groupedData.length === 0) {
