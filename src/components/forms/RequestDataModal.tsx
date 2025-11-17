@@ -56,22 +56,48 @@ export default function RequestDataModal({ open, onOpenChange }: RequestDataModa
     }
   }, [open]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Show success message
-    toast.success("Thanks, we'll reach out to you as soon as we can.");
-    
-    // Reset form
-    setFormData({
-      name: '',
-      email: '',
-      company: '',
-      dataNeeds: '',
-    });
-    
-    // Close modal
-    onOpenChange(false);
+    try {
+      const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mkgkdpzr';
+      
+      const response = await fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          company: formData.company,
+          dataNeeds: formData.dataNeeds,
+          _replyto: formData.email, // Formspree will use this as reply-to
+          _subject: `Data Request from ${formData.name} (${formData.company})`,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send');
+      }
+
+      // Show success message
+      toast.success("Thanks, we'll reach out to you as soon as we can.");
+      
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        company: '',
+        dataNeeds: '',
+      });
+      
+      // Close modal
+      onOpenChange(false);
+    } catch (error) {
+      console.error('Form submission error:', error);
+      toast.error('Failed to send request. Please try again or email us directly.');
+    }
   };
 
   return (
