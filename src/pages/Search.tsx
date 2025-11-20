@@ -6,14 +6,13 @@ import type { DataResult, GroupedDataResult } from '@/components/search/mockData
 import { s3ToHttps } from '@/utils/s3';
 
 const API_BASE_URL = 'https://apiasimov.com';
-const DEFAULT_K = 1000; // Number of results to fetch
 
-// Group results by caption
-function groupResultsByCaption(results: DataResult[]): GroupedDataResult[] {
+// Group results by description
+function groupResultsByDescription(results: DataResult[]): GroupedDataResult[] {
   const grouped = new Map<string, GroupedDataResult>();
 
   results.forEach((result) => {
-    const key = result.caption;
+    const key = result.description;
     
     if (grouped.has(key)) {
       const existing = grouped.get(key)!;
@@ -27,7 +26,7 @@ function groupResultsByCaption(results: DataResult[]): GroupedDataResult[] {
     } else {
       grouped.set(key, {
         task: result.task,
-        caption: result.caption,
+        description: result.description,
         avgScore: result.score,
         files: [{
           mp4: result.mp4,
@@ -47,6 +46,8 @@ export default function Search() {
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<GroupedDataResult[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
+  const [searchMode, setSearchMode] = useState<'semantic' | 'keyword' | 'hybrid'>('hybrid');
+  const [kValue, setKValue] = useState(100);
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) {
@@ -60,7 +61,8 @@ export default function Search() {
     try {
       const params = new URLSearchParams({
         q: searchQuery.trim(),
-        k: String(DEFAULT_K),
+        k: String(kValue),
+        mode: searchMode,
       });
 
       const response = await fetch(`${API_BASE_URL}/search?${params}`);
@@ -84,7 +86,7 @@ export default function Search() {
         score: 1 - result.score,
       }));
       
-      const groupedData = groupResultsByCaption(dataWithInvertedScores);
+      const groupedData = groupResultsByDescription(dataWithInvertedScores);
       setResults(groupedData);
       
       if (groupedData.length === 0) {
@@ -124,7 +126,15 @@ export default function Search() {
 
         {/* Search Bar */}
         <div className="mb-8 max-w-4xl mx-auto">
-          <SearchBar value={searchQuery} onChange={setSearchQuery} onSearch={handleSearch} />
+          <SearchBar 
+            value={searchQuery} 
+            onChange={setSearchQuery} 
+            onSearch={handleSearch}
+            searchMode={searchMode}
+            onSearchModeChange={setSearchMode}
+            kValue={kValue}
+            onKValueChange={setKValue}
+          />
         </div>
 
         {/* Results Count */}

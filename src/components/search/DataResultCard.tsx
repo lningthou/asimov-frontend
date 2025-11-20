@@ -137,7 +137,7 @@ export default function DataResultCard({ result }: DataResultCardProps) {
           </div>
 
           <p className="text-secondary text-sm line-clamp-3">
-            {result.caption}
+            {result.description}
           </p>
 
           {/* Metadata */}
@@ -180,7 +180,7 @@ export default function DataResultCard({ result }: DataResultCardProps) {
           <DialogHeader>
             <DialogTitle className="text-primary">{formatTaskName(result.task)}</DialogTitle>
             <DialogDescription className="text-secondary">
-              {result.caption}
+              {result.description}
             </DialogDescription>
           </DialogHeader>
 
