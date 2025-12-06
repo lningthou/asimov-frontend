@@ -1,64 +1,19 @@
-import { useState, useEffect } from 'react';
 import { Link } from '@tanstack/react-router';
 
 export default function Header() {
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      // Check actual scroll position or body top offset (when modal is open)
-      const scrollY = window.scrollY;
-      const bodyTop = parseInt(document.body.style.top || '0');
-      const effectiveScroll = scrollY || Math.abs(bodyTop);
-      
-      setScrolled(effectiveScroll > 20);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    
-    // Also check on interval when body is fixed (for modal open state)
-    const intervalId = setInterval(() => {
-      if (document.body.style.position === 'fixed') {
-        handleScroll();
-      }
-    }, 100);
-
-    // Initial check
-    handleScroll();
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      clearInterval(intervalId);
-    };
-  }, []);
-
   return (
-    <header
-      className={`sticky top-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? 'backdrop-blur-sm bg-[var(--bg)]/80 border-b border-[var(--border)]'
-          : 'bg-transparent'
-      }`}
-    >
-      <div className="container mx-auto px-4">
-        <div className="flex h-16 items-center justify-between">
-          {/* Logo - lowercase wordmark */}
-          <Link to="/" className="flex items-center group">
-            <div className="text-2xl font-bold text-primary">
-              asimov
-            </div>
-          </Link>
+    <header className="fixed top-0 left-0 right-0 z-50 px-6 py-6">
+      <div className="container mx-auto flex items-center justify-between">
+        <Link to="/" className="text-base font-semibold tracking-tight hover:text-[var(--accent)] transition-colors">
+          asimov
+        </Link>
 
-          {/* Navigation */}
-          <nav className="flex items-center gap-6">
-            <Link
-              to="/search"
-              className="text-primary hover:text-[var(--accent)] transition-colors font-medium"
-            >
-              Search
-            </Link>
-          </nav>
-        </div>
+        <Link
+          to="/search"
+          className="text-secondary hover:text-primary transition-colors text-sm font-medium"
+        >
+          Search
+        </Link>
       </div>
     </header>
   );

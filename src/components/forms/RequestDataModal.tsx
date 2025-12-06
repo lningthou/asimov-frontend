@@ -23,34 +23,28 @@ export default function RequestDataModal({ open, onOpenChange }: RequestDataModa
     company: '',
     dataNeeds: '',
   });
-  
+
   const scrollPositionRef = useRef(0);
 
-  // Preserve scroll position when modal opens/closes
   useEffect(() => {
     if (open) {
-      // Store current scroll position in ref
       scrollPositionRef.current = window.scrollY;
       const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-      
+
       document.body.style.top = `-${scrollPositionRef.current}px`;
       document.body.style.position = 'fixed';
       document.body.style.width = '100%';
       document.body.style.overflow = 'hidden';
-      // Prevent layout shift from scrollbar disappearing
       if (scrollbarWidth > 0) {
         document.body.style.paddingRight = `${scrollbarWidth}px`;
       }
-      
+
       return () => {
-        // Restore scroll position when modal closes
         document.body.style.position = '';
         document.body.style.top = '';
         document.body.style.width = '';
         document.body.style.overflow = '';
         document.body.style.paddingRight = '';
-        
-        // Restore scroll position from ref
         window.scrollTo(0, scrollPositionRef.current);
       };
     }
@@ -58,10 +52,10 @@ export default function RequestDataModal({ open, onOpenChange }: RequestDataModa
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     try {
       const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mkgkdpzr';
-      
+
       const response = await fetch(FORMSPREE_ENDPOINT, {
         method: 'POST',
         headers: {
@@ -72,7 +66,7 @@ export default function RequestDataModal({ open, onOpenChange }: RequestDataModa
           email: formData.email,
           company: formData.company,
           dataNeeds: formData.dataNeeds,
-          _replyto: formData.email, // Formspree will use this as reply-to
+          _replyto: formData.email,
           _subject: `Data Request from ${formData.name} (${formData.company})`,
         }),
       });
@@ -81,113 +75,90 @@ export default function RequestDataModal({ open, onOpenChange }: RequestDataModa
         throw new Error('Failed to send');
       }
 
-      // Show success message
-      toast.success("Thanks, we'll reach out to you as soon as we can.");
-      
-      // Reset form
+      toast.success("Thanks, we'll be in touch soon.");
+
       setFormData({
         name: '',
         email: '',
         company: '',
         dataNeeds: '',
       });
-      
-      // Close modal
+
       onOpenChange(false);
     } catch (error) {
       console.error('Form submission error:', error);
-      toast.error('Failed to send request. Please try again or email us directly.');
+      toast.error('Failed to send request. Please try again.');
     }
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-[var(--bg)] border-[var(--border)]">
+      <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto bg-[var(--bg)] border-[var(--border)]">
         <DialogHeader>
-          <DialogTitle className="text-3xl font-bold">Request Data</DialogTitle>
+          <DialogTitle className="text-2xl font-semibold">Request Data</DialogTitle>
           <DialogDescription className="text-secondary">
-            Fill out the form below and we'll get back to you soon.
+            Tell us about your project and we'll get back to you.
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-8 mt-6">
-          {/* Personal Info Section */}
-          <div className="space-y-5">
-            <div>
-              <span className="tag mb-3 inline-block">PERSONAL INFO</span>
-              <p className="text-sm text-secondary">Tell us a bit about yourself</p>
-            </div>
-
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="name" className="text-xs uppercase tracking-wide text-secondary">Name *</Label>
-                <Input
-                  id="name"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="hairline bg-[var(--surface)] h-11"
-                  required
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-xs uppercase tracking-wide text-secondary">Email *</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="hairline bg-[var(--surface)] h-11"
-                  required
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="company" className="text-xs uppercase tracking-wide text-secondary">Company *</Label>
-                <Input
-                  id="company"
-                  value={formData.company}
-                  onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                  className="hairline bg-[var(--surface)] h-11"
-                  required
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Data Needs Section */}
-          <div className="space-y-5 pt-2">
-            <div>
-              <span className="tag mb-3 inline-block">DATA NEEDS</span>
-              <p className="text-sm text-secondary">Tell us about the data you're looking for</p>
+        <form onSubmit={handleSubmit} className="space-y-6 mt-4">
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="name" className="text-sm text-secondary">Name</Label>
+              <Input
+                id="name"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                className="bg-[var(--surface)] border-[var(--border)] h-10"
+                required
+              />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="dataNeeds" className="text-xs uppercase tracking-wide text-secondary">Description *</Label>
+              <Label htmlFor="email" className="text-sm text-secondary">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                className="bg-[var(--surface)] border-[var(--border)] h-10"
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="company" className="text-sm text-secondary">Company</Label>
+              <Input
+                id="company"
+                value={formData.company}
+                onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                className="bg-[var(--surface)] border-[var(--border)] h-10"
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="dataNeeds" className="text-sm text-secondary">What data do you need?</Label>
               <Textarea
                 id="dataNeeds"
                 value={formData.dataNeeds}
                 onChange={(e) => setFormData({ ...formData, dataNeeds: e.target.value })}
-                placeholder="Describe the type of data you need..."
-                className="hairline bg-[var(--surface)] min-h-[120px]"
-                rows={5}
+                placeholder="Describe the type of demonstrations you're looking for..."
+                className="bg-[var(--surface)] border-[var(--border)] min-h-[100px]"
+                rows={4}
                 required
               />
             </div>
           </div>
 
-          {/* Submit Button */}
-          <div className="pt-4 border-t border-[var(--border)]">
-            <button
-              type="submit"
-              className="w-full bg-[var(--accent)] text-[var(--bg)] font-semibold py-3.5 hover:opacity-90 transition-opacity uppercase tracking-wide text-sm"
-            >
-              Submit Request
-            </button>
-          </div>
+          <button
+            type="submit"
+            className="w-full btn-primary"
+          >
+            Submit Request
+          </button>
         </form>
       </DialogContent>
     </Dialog>
   );
 }
-

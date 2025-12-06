@@ -7,13 +7,12 @@ import { s3ToHttps } from '@/utils/s3';
 
 const API_BASE_URL = 'https://apiasimov.com';
 
-// Group results by description
 function groupResultsByDescription(results: DataResult[]): GroupedDataResult[] {
   const grouped = new Map<string, GroupedDataResult>();
 
   results.forEach((result) => {
     const key = result.description;
-    
+
     if (grouped.has(key)) {
       const existing = grouped.get(key)!;
       existing.files.push({
@@ -21,7 +20,6 @@ function groupResultsByDescription(results: DataResult[]): GroupedDataResult[] {
         hdf5: result.hdf5,
         score: result.score,
       });
-      // Update average score
       existing.avgScore = existing.files.reduce((sum, f) => sum + f.score, 0) / existing.files.length;
     } else {
       grouped.set(key, {
@@ -37,7 +35,6 @@ function groupResultsByDescription(results: DataResult[]): GroupedDataResult[] {
     }
   });
 
-  // Sort by average score (descending)
   return Array.from(grouped.values()).sort((a, b) => b.avgScore - a.avgScore);
 }
 
@@ -66,35 +63,32 @@ export default function Search() {
       });
 
       const response = await fetch(`${API_BASE_URL}/search?${params}`);
-      
+
       if (!response.ok) {
         throw new Error(`Search failed: ${response.statusText}`);
       }
 
       const data: DataResult[] = await response.json();
-      
-      // Transform S3 URLs to HTTPS format
+
       const dataWithHttpsUrls = data.map(result => ({
         ...result,
         mp4: s3ToHttps(result.mp4),
         hdf5: s3ToHttps(result.hdf5),
       }));
-      
-      // Invert scores (lower distance = better match)
+
       const dataWithInvertedScores = dataWithHttpsUrls.map(result => ({
         ...result,
         score: 1 - result.score,
       }));
-      
+
       const groupedData = groupResultsByDescription(dataWithInvertedScores);
       setResults(groupedData);
-      
+
       if (groupedData.length === 0) {
         toast.info('No results found for your query');
       } else {
         const totalDemos = groupedData.reduce((sum, r) => sum + r.files.length, 0);
-        const totalFiles = totalDemos * 2; // Each demo has MP4 + HDF5
-        toast.success(`Found ${groupedData.length} unique ${groupedData.length === 1 ? 'task' : 'tasks'} (${totalDemos} demos · ${totalFiles} files)`);
+        toast.success(`Found ${groupedData.length} ${groupedData.length === 1 ? 'task' : 'tasks'} (${totalDemos} demos)`);
       }
     } catch (error) {
       console.error('Search error:', error);
@@ -112,23 +106,23 @@ export default function Search() {
   };
 
   return (
-    <div className="min-h-screen py-12">
-      <div className="container mx-auto px-4">
+    <div className="min-h-screen py-16">
+      <div className="container mx-auto px-6">
         {/* Header */}
-        <div className="mb-12 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-[var(--text-primary)] mb-4">
-            Search Egocentric Data
+        <div className="mb-16 max-w-2xl">
+          <h1 className="text-4xl md:text-5xl font-semibold mb-4">
+            Search Datasets
           </h1>
-          <p className="text-xl text-[var(--text-secondary)] max-w-2xl mx-auto">
-            Discover high-quality demonstrations for your robotics and embodied AI projects.
+          <p className="text-xl text-secondary">
+            Discover high-quality demonstrations for your robotics projects.
           </p>
         </div>
 
         {/* Search Bar */}
-        <div className="mb-8 max-w-4xl mx-auto">
-          <SearchBar 
-            value={searchQuery} 
-            onChange={setSearchQuery} 
+        <div className="mb-12 max-w-3xl">
+          <SearchBar
+            value={searchQuery}
+            onChange={setSearchQuery}
             onSearch={handleSearch}
             searchMode={searchMode}
             onSearchModeChange={setSearchMode}
@@ -138,19 +132,19 @@ export default function Search() {
         </div>
 
         {/* Results Count */}
-        {hasSearched && !loading && (
-          <div className="text-[var(--text-secondary)] text-sm mb-6 text-center">
+        {hasSearched && !loading && results.length > 0 && (
+          <div className="text-secondary text-sm mb-8">
             {results.length} {results.length === 1 ? 'result' : 'results'}
           </div>
         )}
 
         {/* Results Grid */}
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl">
           {hasSearched ? (
             <ResultsGrid results={results} loading={loading} onReset={handleReset} />
           ) : (
-            <div className="text-center py-20">
-              <p className="text-[var(--text-secondary)] text-lg">
+            <div className="py-24 text-center border border-[var(--border)]">
+              <p className="text-secondary">
                 Enter a search query to find egocentric data demonstrations
               </p>
             </div>

@@ -7,23 +7,22 @@ interface EmptyStateProps {
 
 export default function EmptyState({ onReset }: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center py-20 text-center">
-      <div className="glass rounded-full p-8 mb-6">
-        <SearchX size={64} className="text-[var(--text-secondary)]" />
+    <div className="flex flex-col items-center justify-center py-24 text-center">
+      <div className="mb-6">
+        <SearchX size={48} className="text-muted" />
       </div>
 
-      <h3 className="text-2xl font-bold text-[var(--text-primary)] mb-2">
+      <h3 className="text-xl font-semibold mb-2">
         No results found
       </h3>
 
-      <p className="text-[var(--text-secondary)] mb-6 max-w-md">
-        We couldn't find any data matching your search query. Try different search terms.
+      <p className="text-secondary mb-8 max-w-sm">
+        We couldn't find any data matching your search. Try different terms.
       </p>
 
       <Button
         onClick={onReset}
-        variant="outline"
-        className="border-[var(--border)] hover:bg-[var(--panel-strong)] hover:border-[var(--accent)]"
+        className="btn-ghost"
       >
         Clear Search
       </Button>
