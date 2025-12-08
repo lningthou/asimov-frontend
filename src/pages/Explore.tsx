@@ -19,54 +19,32 @@ interface Dataset {
   demos: Demo[];
 }
 
-const API_BASE_URL = 'https://apiasimov.com';
+// Use local backend in development, production API otherwise
+const API_BASE_URL = import.meta.env.DEV ? 'http://localhost:8000' : 'https://apiasimov.com';
 
 // Mock data structure - replace with actual API data
 const mockDatasets: Dataset[] = [
   {
     id: '1',
-    name: 'kitchen_manipulation',
+    name: 'local_episodes',
     demos: [
-      { id: '1-1', name: 'open_cabinet_001', rrdUrl: `${API_BASE_URL}/rrd/test_output_single_cam.rrd` },
-      { id: '1-2', name: 'open_cabinet_002', rrdUrl: `${API_BASE_URL}/rrd/test_output_final.rrd` },
-      { id: '1-3', name: 'open_drawer_001', rrdUrl: `${API_BASE_URL}/rrd/test_output_minimal.rrd` },
-      { id: '1-4', name: 'close_fridge_001', rrdUrl: 'https://app.rerun.io/version/0.20.3/examples/arkit_scenes.rrd' },
+      { id: '1-1', name: 'episode_001', rrdUrl: `${API_BASE_URL}/rrd/episode_001.rrd` },
     ],
   },
   {
     id: '2',
-    name: 'object_pickup',
+    name: 'kitchen_manipulation',
     demos: [
-      { id: '2-1', name: 'pick_mug_001', rrdUrl: 'https://app.rerun.io/version/0.20.3/examples/arkit_scenes.rrd' },
-      { id: '2-2', name: 'pick_mug_002', rrdUrl: 'https://app.rerun.io/version/0.20.3/examples/arkit_scenes.rrd' },
-      { id: '2-3', name: 'pick_plate_001', rrdUrl: 'https://app.rerun.io/version/0.20.3/examples/arkit_scenes.rrd' },
-      { id: '2-4', name: 'pick_bottle_001', rrdUrl: 'https://app.rerun.io/version/0.20.3/examples/arkit_scenes.rrd' },
-      { id: '2-5', name: 'pick_bottle_002', rrdUrl: 'https://app.rerun.io/version/0.20.3/examples/arkit_scenes.rrd' },
+      { id: '2-1', name: 'open_cabinet_001', rrdUrl: `${API_BASE_URL}/rrd/test_output_single_cam.rrd` },
+      { id: '2-2', name: 'open_cabinet_002', rrdUrl: `${API_BASE_URL}/rrd/test_output_final.rrd` },
+      { id: '2-3', name: 'open_drawer_001', rrdUrl: `${API_BASE_URL}/rrd/test_output_minimal.rrd` },
     ],
   },
   {
     id: '3',
-    name: 'tool_use',
+    name: 'rerun_examples',
     demos: [
-      { id: '3-1', name: 'use_hammer_001', rrdUrl: 'https://app.rerun.io/version/0.20.3/examples/arkit_scenes.rrd' },
-      { id: '3-2', name: 'use_screwdriver_001', rrdUrl: 'https://app.rerun.io/version/0.20.3/examples/arkit_scenes.rrd' },
-    ],
-  },
-  {
-    id: '4',
-    name: 'navigation',
-    demos: [
-      { id: '4-1', name: 'walk_hallway_001', rrdUrl: 'https://app.rerun.io/version/0.20.3/examples/arkit_scenes.rrd' },
-      { id: '4-2', name: 'walk_hallway_002', rrdUrl: 'https://app.rerun.io/version/0.20.3/examples/arkit_scenes.rrd' },
-      { id: '4-3', name: 'avoid_obstacle_001', rrdUrl: 'https://app.rerun.io/version/0.20.3/examples/arkit_scenes.rrd' },
-    ],
-  },
-  {
-    id: '5',
-    name: 'folding',
-    demos: [
-      { id: '5-1', name: 'fold_towel_001', rrdUrl: 'https://app.rerun.io/version/0.20.3/examples/arkit_scenes.rrd' },
-      { id: '5-2', name: 'fold_shirt_001', rrdUrl: 'https://app.rerun.io/version/0.20.3/examples/arkit_scenes.rrd' },
+      { id: '3-1', name: 'arkit_scenes', rrdUrl: 'https://app.rerun.io/version/0.20.3/examples/arkit_scenes.rrd' },
     ],
   },
 ];

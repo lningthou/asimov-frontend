@@ -17,4 +17,9 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  optimizeDeps: {
+    // Exclude rerun packages from pre-bundling since they use WASM
+    exclude: ['@rerun-io/web-viewer', '@rerun-io/web-viewer-react'],
+  },
+  assetsInclude: ['**/*.wasm'],
 })
