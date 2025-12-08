@@ -1,3 +1,6 @@
+import { ExternalLink } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+
 interface RerunViewerProps {
   rrdUrl: string | null;
   className?: string;
@@ -18,12 +21,26 @@ export default function RerunViewer({ rrdUrl, className = '' }: RerunViewerProps
 
   const viewerUrl = `https://app.rerun.io/version/${RERUN_VERSION}/index.html?url=${encodeURIComponent(rrdUrl)}`;
 
+  const handleOpenInNewTab = () => {
+    window.open(viewerUrl, '_blank');
+  };
+
   return (
-    <iframe
-      src={viewerUrl}
-      className={`w-full h-full border-0 ${className}`}
-      allow="fullscreen"
-      title="Rerun Viewer"
-    />
+    <div className={`w-full h-full flex flex-col ${className}`}>
+      {/* Toolbar */}
+      <div className="flex items-center justify-end px-3 py-2 border-b border-[var(--border)] bg-[var(--surface)]">
+        <Button variant="ghost" size="sm" onClick={handleOpenInNewTab}>
+          <ExternalLink size={14} />
+          Open in new tab
+        </Button>
+      </div>
+      {/* Viewer */}
+      <iframe
+        src={viewerUrl}
+        className="flex-1 w-full border-0"
+        allow="fullscreen"
+        title="Rerun Viewer"
+      />
+    </div>
   );
 }
