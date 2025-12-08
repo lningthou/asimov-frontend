@@ -1,3 +1,4 @@
+import WebViewer from '@rerun-io/web-viewer-react';
 import { ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -6,7 +7,6 @@ interface RerunViewerProps {
   className?: string;
 }
 
-// Using iframe approach - more reliable than WASM embedding
 // Version should match the Rerun SDK version used to generate .rrd files
 const RERUN_VERSION = '0.27.2';
 
@@ -34,13 +34,15 @@ export default function RerunViewer({ rrdUrl, className = '' }: RerunViewerProps
           Open in new tab
         </Button>
       </div>
-      {/* Viewer */}
-      <iframe
-        src={viewerUrl}
-        className="flex-1 w-full border-0"
-        allow="fullscreen"
-        title="Rerun Viewer"
-      />
+      {/* Rerun React Component */}
+      <div className="flex-1">
+        <WebViewer
+          width="100%"
+          height="100%"
+          rrd={rrdUrl}
+          hide_welcome_screen
+        />
+      </div>
     </div>
   );
 }
