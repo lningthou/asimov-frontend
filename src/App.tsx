@@ -4,6 +4,7 @@ import { Toaster } from '@/components/ui/sonner';
 import Header from './components/layout/Header';
 import Home from './pages/Home';
 import Search from './pages/Search';
+import Explore from './pages/Explore';
 
 // Root layout component
 function RootComponent() {
@@ -36,8 +37,14 @@ const searchRoute = createRoute({
   component: Search,
 });
 
+const exploreRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/explore',
+  component: Explore,
+});
+
 // Create route tree
-const routeTree = rootRoute.addChildren([indexRoute, searchRoute]);
+const routeTree = rootRoute.addChildren([indexRoute, searchRoute, exploreRoute]);
 
 // Create router
 const router = createRouter({ routeTree });

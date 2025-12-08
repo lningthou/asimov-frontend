@@ -44,7 +44,7 @@ export default function Home() {
                 <ArrowRight className="ml-2" size={18} />
               </button>
               <Link
-                to="/search"
+                to="/explore"
                 className="btn-ghost inline-flex items-center justify-center"
               >
                 Explore Datasets

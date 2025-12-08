@@ -106,7 +106,7 @@ export default function Search() {
   };
 
   return (
-    <div className="min-h-screen py-16">
+    <div className="min-h-screen pt-28 pb-16">
       <div className="container mx-auto px-6">
         {/* Header */}
         <div className="mb-16 max-w-2xl">
