@@ -19,15 +19,17 @@ interface Dataset {
   demos: Demo[];
 }
 
-// Mock data structure - replace with actual S3 data
+const API_BASE_URL = 'https://apiasimov.com';
+
+// Mock data structure - replace with actual API data
 const mockDatasets: Dataset[] = [
   {
     id: '1',
     name: 'kitchen_manipulation',
     demos: [
-      { id: '1-1', name: 'open_cabinet_001', rrdUrl: 'https://asimov-ego-data.s3.us-east-1.amazonaws.com/samples/test_output_single_cam.rrd' },
-      { id: '1-2', name: 'open_cabinet_002', rrdUrl: 'https://asimov-ego-data.s3.us-east-1.amazonaws.com/samples/test_output_final.rrd' },
-      { id: '1-3', name: 'open_drawer_001', rrdUrl: 'https://asimov-ego-data.s3.us-east-1.amazonaws.com/samples/test_output_minimal.rrd' },
+      { id: '1-1', name: 'open_cabinet_001', rrdUrl: `${API_BASE_URL}/rrd/test_output_single_cam.rrd` },
+      { id: '1-2', name: 'open_cabinet_002', rrdUrl: `${API_BASE_URL}/rrd/test_output_final.rrd` },
+      { id: '1-3', name: 'open_drawer_001', rrdUrl: `${API_BASE_URL}/rrd/test_output_minimal.rrd` },
       { id: '1-4', name: 'close_fridge_001', rrdUrl: 'https://app.rerun.io/version/0.20.3/examples/arkit_scenes.rrd' },
     ],
   },
