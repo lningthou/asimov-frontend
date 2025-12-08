@@ -5,7 +5,7 @@ interface RerunViewerProps {
 
 // Using iframe approach - more reliable than WASM embedding
 // Version should match the Rerun SDK version used to generate .rrd files
-const RERUN_VERSION = '0.22.1';
+const RERUN_VERSION = '0.27.2';
 
 export default function RerunViewer({ rrdUrl, className = '' }: RerunViewerProps) {
   if (!rrdUrl) {
