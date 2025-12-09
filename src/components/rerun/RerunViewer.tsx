@@ -1,7 +1,6 @@
-import WebViewer from '@rerun-io/web-viewer-react';
 import { ExternalLink, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 interface RerunViewerProps {
   rrdUrl: string | null;
@@ -13,41 +12,27 @@ const RERUN_VERSION = '0.27.2';
 
 export default function RerunViewer({ rrdUrl, className = '' }: RerunViewerProps) {
   const [isLoading, setIsLoading] = useState(true);
-  const [viewerKey, setViewerKey] = useState(0);
-  const [isReady, setIsReady] = useState(false);
-  const [deferredUrl, setDeferredUrl] = useState<string | null>(null);
+  const [iframeKey, setIframeKey] = useState(0);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
-  // Defer WebViewer mounting on initial load to avoid WASM race condition
+  // Handle URL changes
   useEffect(() => {
-    // Give WASM time to initialize on first mount
-    const initTimer = setTimeout(() => {
-      setIsReady(true);
-    }, 500);
-    return () => clearTimeout(initTimer);
-  }, []);
-
-  // Handle URL changes - runs when isReady becomes true OR when rrdUrl changes
-  useEffect(() => {
-    if (!rrdUrl || !isReady) {
+    if (!rrdUrl) {
+      setIsLoading(false);
       return;
     }
 
     setIsLoading(true);
-    // Defer URL assignment to next tick to avoid race condition
-    setDeferredUrl(null);
-    setViewerKey(prev => prev + 1);
+    // Force new iframe instance for each URL change
+    setIframeKey(prev => prev + 1);
+  }, [rrdUrl]);
 
-    const urlTimer = setTimeout(() => {
-      setDeferredUrl(rrdUrl);
-    }, 100);
-
-    // Give the viewer time to initialize
-    const loadTimer = setTimeout(() => setIsLoading(false), 2000);
-    return () => {
-      clearTimeout(urlTimer);
-      clearTimeout(loadTimer);
-    };
-  }, [rrdUrl, isReady]);
+  const handleIframeLoad = () => {
+    // Give the viewer a moment to initialize after iframe loads
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  };
 
   if (!rrdUrl) {
     return (
@@ -57,7 +42,8 @@ export default function RerunViewer({ rrdUrl, className = '' }: RerunViewerProps
     );
   }
 
-  const viewerUrl = `https://app.rerun.io/version/${RERUN_VERSION}/index.html?url=${encodeURIComponent(rrdUrl)}`;
+  // Use the hosted Rerun viewer with the RRD URL
+  const viewerUrl = `https://app.rerun.io/version/${RERUN_VERSION}/?url=${encodeURIComponent(rrdUrl)}`;
 
   const handleOpenInNewTab = () => {
     window.open(viewerUrl, '_blank');
@@ -72,22 +58,22 @@ export default function RerunViewer({ rrdUrl, className = '' }: RerunViewerProps
           Open in new tab
         </Button>
       </div>
-      {/* Rerun React Component */}
+      {/* Rerun Viewer via iframe */}
       <div className="flex-1 relative">
-        {(isLoading || !isReady) && (
+        {isLoading && (
           <div className="absolute inset-0 flex items-center justify-center bg-background/80 z-10">
             <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
           </div>
         )}
-        {isReady && deferredUrl && (
-          <WebViewer
-            key={viewerKey}
-            width="100%"
-            height="100%"
-            rrd={deferredUrl}
-            hide_welcome_screen
-          />
-        )}
+        <iframe
+          key={iframeKey}
+          ref={iframeRef}
+          src={viewerUrl}
+          onLoad={handleIframeLoad}
+          className="w-full h-full border-0"
+          allow="fullscreen"
+          title="Rerun Viewer"
+        />
       </div>
     </div>
   );
