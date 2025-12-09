@@ -210,7 +210,7 @@ export default function Explore() {
       }
 
       // Generate and download zip
-      await saveZip(zip, 'egodex_dataset.zip');
+      await saveZip(zip, 'asimov-ego-data.zip');
     } catch (err) {
       console.error('Download all failed:', err);
     } finally {
