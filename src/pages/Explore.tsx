@@ -440,7 +440,7 @@ export default function Explore() {
                       <Database size={18} className="shrink-0 mt-0.5 text-orange-500" />
                       <div>
                         <p className="text-sm font-medium text-foreground">Object Detections & Segmentation</p>
-                        <p className="text-xs">2D bounding boxes, confidence scores, RLE segmentation masks, and 3D point clouds for detected objects</p>
+                        <p className="text-xs">2D bounding boxes, confidence scores, RLE segmentation masks</p>
                       </div>
                     </div>
 
