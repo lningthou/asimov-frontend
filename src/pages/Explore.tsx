@@ -43,12 +43,25 @@ export default function Explore() {
   // Check auth status on mount
   useEffect(() => {
     async function checkAuth() {
+      const token = localStorage.getItem('explore_token');
+      if (!token) {
+        setIsAuthenticated(false);
+        setCheckingAuth(false);
+        return;
+      }
+
       try {
-        const response = await fetch(`${API_BASE_URL}/api/auth/check`, {
-          credentials: 'include',
+        const response = await fetch(`${API_BASE_URL}/api/auth/verify`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
         });
         const data = await response.json();
         setIsAuthenticated(data.authenticated);
+        if (!data.authenticated) {
+          localStorage.removeItem('explore_token');
+        }
       } catch (err) {
         console.error('Failed to check auth:', err);
         setIsAuthenticated(false);
@@ -114,11 +127,12 @@ export default function Explore() {
       const response = await fetch(`${API_BASE_URL}/api/auth`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({ password }),
       });
 
       if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('explore_token', data.token);
         setIsAuthenticated(true);
         setPassword('');
       } else {
